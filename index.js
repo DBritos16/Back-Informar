@@ -17,7 +17,8 @@ app.set('PORT', process.env.PORT || 5000);
 connectDB();
 
 //Routes
+app.use(require('./src/routes/auth.routes'))
 app.use(require('./src/routes/carreras.routes'))
 
 //Port
-app.listen(app.get('PORT'), (err)=>(err)?console.log(err):console.log(`Server listening on PORT ${app.get('PORT')}`));
+app.listen(app.get('PORT'), (err)=>err?console.log(err):console.log(`Server listening on PORT ${app.get('PORT')}`));
