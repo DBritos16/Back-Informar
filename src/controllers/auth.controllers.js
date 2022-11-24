@@ -26,7 +26,11 @@ ctrl.register = async (req, res)=>{
 
     const saveUser = await newUser.save();
 
-    res.json(saveUser)
+    if(saveUser){
+        res.json({
+            msg: 'Usuario creado con exito'
+        })
+    }
 
 }
 
