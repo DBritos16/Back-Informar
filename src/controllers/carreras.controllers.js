@@ -17,13 +17,13 @@ ctrl.getCarrera = async (req, res)=>{
 ctrl.postCarrera = async (req, res)=>{
 
     try {
-        const {nombre, descripcion, duracion} = req.body;
+        const {nombre, descripcion, duracion, tipoDuracion, tipoCarrera, institucion} = req.body;
 
         if(!nombre || !descripcion || !duracion){
             res.status(400).json('Verifique los datos ingresados y vuelva a intentarlo')}
     
         const newCarrea = new carreraSchema({
-            nombre, descripcion, duracion
+            nombre, descripcion, duracion, tipoDuracion, tipoCarrera, institucion
         });
     
         await newCarrea.save();
