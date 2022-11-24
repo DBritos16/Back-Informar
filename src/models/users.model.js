@@ -26,7 +26,13 @@ const userSchema = new Schema({
     contraseña: {
         type: String, 
         require: true
+    },
+
+    isActive: {
+        type: Boolean,
+        default: true
     }
+    
 }, {versionKey: false, timestamps: true})
 
 module.exports = model('usuarios', userSchema);

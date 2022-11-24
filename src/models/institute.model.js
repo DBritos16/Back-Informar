@@ -1,6 +1,6 @@
 const {Schema, model} = require('mongoose');
 
-const carreraSchema = new Schema({
+const instituteSchema = new Schema({
     nombre: {
         type: String,
         require: true
@@ -11,8 +11,18 @@ const carreraSchema = new Schema({
         require: true
     },
 
-    duracion: {
-        type: Number,
+    tipo: {
+        type: String,
+        require: true
+    },
+
+    ubicacion: {
+        type: String,
+        require: true
+    },
+
+    contacto: {
+        type: String,
         require: true
     },
 
@@ -23,4 +33,4 @@ const carreraSchema = new Schema({
 
 }, {versionKey: false});
 
-module.exports = model('carreras', carreraSchema);
+module.exports = model('instituciones', instituteSchema);
