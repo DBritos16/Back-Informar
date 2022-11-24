@@ -14,8 +14,21 @@ const carreraSchema = new Schema({
     duracion: {
         type: Number,
         require: true
+    },
+
+    tipoDuracion: {
+        type: String,
+        require: true
+    },
+    tipoCarrera:{
+        type: String,
+        require: true
+    },
+    institucion: {
+        type: String,
+        require: true
     }
 
-}, {versionKey: false});
+}, {versionKey: false, timestamps: true});
 
 module.exports = model('carreras', carreraSchema);
