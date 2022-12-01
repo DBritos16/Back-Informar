@@ -19,6 +19,7 @@ connectDB();
 //Routes
 app.use(require('./src/routes/auth.routes'))
 app.use(require('./src/routes/carreras.routes'))
+app.use(require('./src/routes/panel.routes'))
 app.use(require('./src/routes/register.routes'))
 app.use(require('./src/routes/comunidad.routes'))
 
