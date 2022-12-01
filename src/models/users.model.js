@@ -17,7 +17,10 @@ const userSchema = new Schema({
         type: String,
         default: 'estudiante'
     },
-
+    isActive: {
+        type: Boolean,
+        default: true
+    },
     correo: {
         type: String,
         require: true

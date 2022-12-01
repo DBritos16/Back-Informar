@@ -1,7 +1,12 @@
 const {Schema, model, SchemaTypes} = require('mongoose');
 
-const carreraSchema = new Schema({
-    nombre: {
+const postSchema = new Schema({
+    autor: {
+        type: String,
+        require: true
+    },
+
+    titulo: {
         type: String,
         require: true
     },
@@ -10,34 +15,21 @@ const carreraSchema = new Schema({
         type: String,
         require: true
     },
-    ofertaAcademica: {
+
+    tipo: {
         type: String,
         require: true
     },
 
-    duracion: {
-        type: Number,
-        require: true
-    },
-
-    tipoDuracion: {
-        type: String,
-        require: true
-    },
-
-    tipoCarrera:{
-        type: String,
-        require: true
-    },
-    
-    institucion: {
-        type: String,
-        require: true
-    },
-
-    idInsituto: {
+    idAutor: {
         type: SchemaTypes.ObjectId
     },
+
+    fechaPublicacion: {
+        type: Object,
+        default: new Date().toLocaleDateString('es-es', { weekday:"long", year:"numeric", month:"long", day:"numeric"})
+    },
+
     visitas: {
         type: Number,
         default: 0
@@ -50,4 +42,4 @@ const carreraSchema = new Schema({
 
 }, {versionKey: false, timestamps: true});
 
-module.exports = model('carreras', carreraSchema);
+module.exports = model('comunidad', postSchema);

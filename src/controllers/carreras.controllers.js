@@ -4,7 +4,44 @@ const ctrl = {};
 ctrl.getCarrera = async (req, res)=>{
 
     try {
-        const getCarreras = await carreraSchema.find();
+        const getCarreras = await carreraSchema.find({isActive: true});
+
+        res.json(getCarreras);
+
+    } catch (error) {
+        res.json(`Ha ocurrido un error: ${error}`)
+    }
+
+}
+
+ctrl.getInfoCarrera = async (req, res)=>{
+
+    const id = req.params.id
+
+    try {
+        const getCarreras = await carreraSchema.findById(id);
+
+        if(!getCarreras){
+            return res.status(404).json({
+                msg: 'No se encontraron resultados'
+            })
+        }
+        res.json(getCarreras);
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).json('Ha ocurrido un error')
+    }
+
+}
+
+
+ctrl.getMisCarreras = async (req, res)=>{
+
+    const {_id} = req.instituto
+
+    try {
+        const getCarreras = await carreraSchema.find({idInsituto: _id});
 
         res.json(getCarreras);
 
@@ -16,19 +53,25 @@ ctrl.getCarrera = async (req, res)=>{
 
 ctrl.postCarrera = async (req, res)=>{
 
+    const {_id} = req.instituto
+
     try {
-        const {nombre, descripcion, duracion, tipoDuracion, tipoCarrera, institucion} = req.body;
+        const {nombre, descripcion, ofertaAcademica, duracion, tipoDuracion, tipoCarrera} = req.body;
 
         if(!nombre || !descripcion || !duracion){
             res.status(400).json('Verifique los datos ingresados y vuelva a intentarlo')}
     
         const newCarrea = new carreraSchema({
-            nombre, descripcion, duracion, tipoDuracion, tipoCarrera, institucion
+            nombre, descripcion, ofertaAcademica, duracion, tipoDuracion, tipoCarrera, institucion: req.instituto.nombre, idInsituto: _id
         });
     
-        await newCarrea.save();
+        const saveCarrera = await newCarrea.save();
 
-        res.json('La carrera ha sido creada con exito!');
+        console.log(saveCarrera);
+        res.json({
+            id: saveCarrera._id,
+            msg: 'La carrera ha sido creada con exito!'
+        });
 
     } catch (error) {
         console.log(error.message)

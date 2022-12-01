@@ -19,6 +19,9 @@ connectDB();
 //Routes
 app.use(require('./src/routes/auth.routes'))
 app.use(require('./src/routes/carreras.routes'))
+app.use(require('./src/routes/register.routes'))
+app.use(require('./src/routes/comunidad.routes'))
+
 
 //Port
 app.listen(app.get('PORT'), (err)=>err?console.log(err):console.log(`Server listening on PORT ${app.get('PORT')}`));

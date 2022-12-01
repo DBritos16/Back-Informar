@@ -1,9 +1,15 @@
 const router = require('express').Router();
-const {getCarrera, postCarrera, putCarrera, deleteCarrera} = require('../controllers/carreras.controllers');
+const {getCarrera, postCarrera, putCarrera, deleteCarrera, getInfoCarrera, getMisCarreras} = require('../controllers/carreras.controllers');
+const incrementarVista = require('../middleware/incrementarVista');
+const validarInstituto = require('../middleware/validarInsituto');
 
 router.get('/carreras', getCarrera);
 
-router.post('/carreras', postCarrera);
+router.get('/carreras/:id', incrementarVista, getInfoCarrera);
+
+router.get('/miscarreras', validarInstituto, getMisCarreras);
+
+router.post('/crearcarrera', validarInstituto, postCarrera);
 
 router.put('/carreras/:id', putCarrera);
 
