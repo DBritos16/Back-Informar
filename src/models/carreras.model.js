@@ -1,6 +1,7 @@
 const {Schema, model, SchemaTypes} = require('mongoose');
 
 const carreraSchema = new Schema({
+    
     nombre: {
         type: String,
         require: true
@@ -38,6 +39,7 @@ const carreraSchema = new Schema({
     idInsituto: {
         type: SchemaTypes.ObjectId
     },
+
     visitas: {
         type: Number,
         default: 0

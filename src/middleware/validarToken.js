@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken');
 
 const validarToken = async (req, res, next) => {
 
-    const token = req.params.token;
+    const id = req.params.id;
 
-    if (!token) {
+    if (!id) {
         return res.status(400).json({
             msg: 'No token received'
         })

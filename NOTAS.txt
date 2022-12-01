@@ -1,0 +1,5 @@
+a la institucion pedir constancia CUE (clave unica educativa)
+pedir datos de validacion para verificar una institucion
+el foro de preguntas que no sea en modo de tarjeta
+cambiar el filtro (estetica)
+libreria express-fileUpload

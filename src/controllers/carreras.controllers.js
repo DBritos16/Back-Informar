@@ -1,6 +1,7 @@
 const carreraSchema = require('../models/carreras.model')
 const ctrl = {};
 
+
 ctrl.getCarrera = async (req, res)=>{
 
     try {
@@ -13,6 +14,7 @@ ctrl.getCarrera = async (req, res)=>{
     }
 
 }
+
 
 ctrl.getInfoCarrera = async (req, res)=>{
 
@@ -51,6 +53,7 @@ ctrl.getMisCarreras = async (req, res)=>{
 
 }
 
+
 ctrl.postCarrera = async (req, res)=>{
 
     const {_id} = req.instituto
@@ -79,21 +82,30 @@ ctrl.postCarrera = async (req, res)=>{
     }
 }
 
+
 ctrl.putCarrera = async (req, res)=>{
     
     try {
-        const {id} = req.params
 
-        if(!id){res.status(400).json('Es necesario un ID')}
+        const idCarrera = req.params.id
+        const {nombre, descripcion, ofertaAcademica, duracion, tipoDuracion, tipoCarrera} = req.body;
+        
+        //VERIFICACION DE CAMPOS
+        if (!idCarrera || !nombre || !descripcion || !ofertaAcademica || !duracion || !tipoDuracion || !tipoCarrera) {
+            return res.status(400).json({
+                message: 'Falta completar campos',
+                respuesta: ["nombre", "descripcion", "ofertaAcademica", "duracion", "tipoDuracion", "tipoCarrera"]
+        });
+        }
 
-        const {nombre, descripcion, duracion} = req.body;
+        const carrera = await carreraSchema.findOne({$and:[{_id: idCarrera},{isActive: true}]})
 
-        await carreraSchema.updateOne({_id:id,
-        $set:{
-            nombre, descripcion, duracion
-        }});
+        //VERIFICAR CARRERA
+        if(!carrera){res.status(400).json({message:'Carrera no encontrada'})}
 
-        res.json(`Los datos han sido actualizados correctamente`);
+        //ACTUALIZAR
+        await carrera.updateOne({nombre, descripcion, ofertaAcademica, duracion, tipoDuracion, tipoCarrera});
+        return res.json(`Los datos han sido actualizados correctamente`);
 
     } catch (error) {
         console.log(error.message);
@@ -101,20 +113,24 @@ ctrl.putCarrera = async (req, res)=>{
     }
 }
 
+
 ctrl.deleteCarrera = async (req, res)=>{
     try {
-        const {id} = req.params;
+        const idCarrera = req.params.id
+        const carrera = await carreraSchema.findOne({$and:[{_id:idCarrera},{isActive:true}]})
 
-        if(!id){res.status(400).json('Es necesario un ID')}
+        //VERIFICACION DE CARRERA
+        if(!carrera){res.status(400).json({message:'No se encontró carrera'})}
 
-        await carreraSchema.findByIdAndDelete(id);
-
-        res.json('La carrera ha sido eliminada con exito');
+        //ELIMINAR TAREA
+        await carreraSchema.updateOne({isActive:false});
+        return res.status(200).json({message: 'Usuario eliminado correctamente'});
 
     } catch (error) {
         console.log(error.message);
         res.status(400).json('Ha ocurrido un error al intentar eliminar la carrera');
     }
 }
+
 
 module.exports = ctrl;
