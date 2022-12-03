@@ -6,7 +6,34 @@ const carreraSchema = new Schema({
         type: String,
         require: true
     },
-
+    categoria: {
+        type: String,
+        require: true
+    },
+    tipoCarrera:{
+        type: String,
+        require: true
+    },
+    duracion: {
+        type: Number,
+        require: true
+    },
+    tipoDuracion: {
+        type: String,
+        require: true
+    },
+    modalidad:{
+        type: String,
+        require: true
+    },
+    caracter:{
+        type: String,
+        require: true
+    },
+    isActive: {
+        type: Boolean,
+        require: true
+    },
     descripcion: {
         type: String,
         require: true
@@ -15,39 +42,20 @@ const carreraSchema = new Schema({
         type: String,
         require: true
     },
-
-    duracion: {
-        type: Number,
-        require: true
-    },
-
-    tipoDuracion: {
-        type: String,
-        require: true
-    },
-
-    tipoCarrera:{
-        type: String,
-        require: true
-    },
-    
     institucion: {
         type: String,
         require: true
     },
-
     idInsituto: {
         type: SchemaTypes.ObjectId
     },
-
+    fechaCreacion: {
+        type: Object,
+        default: new Date().toLocaleDateString('es-es', { weekday:"long", year:"numeric", month:"long", day:"numeric"})
+    },
     visitas: {
         type: Number,
         default: 0
-    },
-    
-    isActive: {
-        type: Boolean,
-        default: true
     }
 
 }, {versionKey: false, timestamps: true});
