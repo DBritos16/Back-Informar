@@ -6,7 +6,7 @@ ctrl.getMisCarreras = async (req, res)=>{
     const {_id} = req.instituto
 
     try {
-        const getCarreras = await carreraSchema.find({idInsituto: _id});
+        const getCarreras = await carreraSchema.find({idInsituto: _id}).sort({updateAt: -1});
 
         res.json(getCarreras);
 
@@ -21,13 +21,13 @@ ctrl.postCarrera = async (req, res)=>{
     const {_id} = req.instituto
 
     try {
-        const {nombre, descripcion, ofertaAcademica, duracion, tipoDuracion, tipoCarrera} = req.body;
+        const {nombre, categoria, tipoCarrera, duracion, tipoDuracion, modalidad, caracter, isActive, descripcion, ofertaAcademica} = req.body;
 
-        if(!nombre || !descripcion || !duracion){
+        if(!nombre || !duracion){
             res.status(400).json('Verifique los datos ingresados y vuelva a intentarlo')}
     
         const newCarrea = new carreraSchema({
-            nombre, descripcion, ofertaAcademica, duracion, tipoDuracion, tipoCarrera, institucion: req.instituto.nombre, idInsituto: _id
+            nombre, categoria, tipoCarrera, duracion, tipoDuracion, modalidad, caracter, isActive, descripcion, ofertaAcademica, institucion: req.instituto.nombre, idInsituto: _id
         });
     
         const saveCarrera = await newCarrea.save();
@@ -53,6 +53,7 @@ ctrl.editInfoCarrera = async (req, res)=>{
         const getCarrera = await carreraSchema.findOne({_id: id, idInsituto: _id});
 
         res.json(getCarrera);
+        
 
     } catch (error) {
         res.json(`Ha ocurrido un error: ${error}`)
@@ -60,20 +61,40 @@ ctrl.editInfoCarrera = async (req, res)=>{
 }
 
 ctrl.putCarrera = async (req, res)=>{
-    
+
     try {
-        const {id} = req.params
 
-        if(!id){res.status(400).json('Es necesario un ID')}
+        const idCarrera = req.params.id
+        const {nombre, categoria, tipoCarrera, duracion, tipoDuracion, modalidad, caracter, isActive, descripcion, ofertaAcademica} = req.body;
 
-        const {nombre, descripcion, duracion} = req.body;
+        //VERIFICACION DE CAMPOS
+        if (!idCarrera || !nombre || !descripcion || !ofertaAcademica || !duracion || !tipoDuracion || !tipoCarrera) {
+            return res.status(400).json({
+                message: 'Falta completar campos',
+                respuesta: ["nombre", "descripcion", "ofertaAcademica", "duracion", "tipoDuracion", "tipoCarrera"]
+        });
+        }
 
-        await carreraSchema.updateOne({_id:id,
-        $set:{
-            nombre, descripcion, duracion
-        }});
+        let carrera = await carreraSchema.findOne({_id: idCarrera})
 
-        res.json(`Los datos han sido actualizados correctamente`);
+        //VERIFICAR CARRERA
+        if(!carrera){res.status(400).json({message:'Carrera no encontrada'})}
+
+        //ACTUALIZAR
+        const updateCarrera = await carrera.updateOne({nombre, categoria, tipoCarrera, duracion, tipoDuracion, modalidad, caracter, isActive, descripcion, ofertaAcademica});
+        
+        if(!updateCarrera){
+            return res.status(400).json({
+                msg: 'Ha ocurrido un error, intentelo de nuevo',
+            })
+        }
+
+        carrera = await carreraSchema.findOne({_id: idCarrera})
+
+        return res.json({
+            msg: 'Los datos han sido actualizados correctamente',
+            payload: carrera
+        });
 
     } catch (error) {
         console.log(error.message);
@@ -81,15 +102,18 @@ ctrl.putCarrera = async (req, res)=>{
     }
 }
 
+
 ctrl.deleteCarrera = async (req, res)=>{
     try {
-        const {id} = req.params;
+        const idCarrera = req.params.id
+        const carrera = await carreraSchema.findOne({$and:[{_id:idCarrera},{isActive:true}]})
 
-        if(!id){res.status(400).json('Es necesario un ID')}
+        //VERIFICACION DE CARRERA
+        if(!carrera){res.status(400).json({message:'No se encontró carrera'})}
 
-        await carreraSchema.findByIdAndDelete(id);
-
-        res.json('La carrera ha sido eliminada con exito');
+        //ELIMINAR TAREA
+        await carreraSchema.updateOne({isActive:false});
+        return res.status(200).json({message: 'Usuario eliminado correctamente'});
 
     } catch (error) {
         console.log(error.message);
