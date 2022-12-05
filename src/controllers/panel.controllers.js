@@ -96,7 +96,7 @@ ctrl.putCarrera = async (req, res)=>{
         if(!carrera){res.status(400).json({message:'Carrera no encontrada'})}
 
         //ACTUALIZAR
-        const updateCarrera = await carrera.updateOne({nombre, categoria, tipoCarrera, duracion, tipoDuracion, modalidad, caracter, isActive, descripcion, ofertaAcademica, requisitos});
+        const updateCarrera = await carrera.updateOne({nombre, categoria, tipoCarrera, duracion, tipoDuracion, modalidad, caracter, isActive, descripcion, ofertaAcademica, requisitos}, {new: true});
         
         if(!updateCarrera){
             return res.status(400).json({
@@ -104,9 +104,9 @@ ctrl.putCarrera = async (req, res)=>{
             })
         }
 
-        carrera = await carreraSchema.findOne({_id: idCarrera})
+       /*  carrera = await carreraSchema.findOne({_id: idCarrera}) */
 
-        return res.json(carrera);
+        return res.json(updateCarrera);
 
     } catch (error) {
         console.log(error.message);
