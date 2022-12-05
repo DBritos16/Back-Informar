@@ -20,7 +20,7 @@ ctrl.getCarrera = async (req, res) => {
             carreraSchema.find(filtros)
                 .find({ nombre: { $regex: texto, $options: "i" } })
                 .find({isActive: true})
-                .sort({updatedAt: -1})
+                .sort({createdAt: -1})
                 .limit(limite)
                 .exec((err, carreras) => {
                     if (err) return res.status(400).json({ msg: 'Ha ocurrido un error' })
@@ -29,7 +29,7 @@ ctrl.getCarrera = async (req, res) => {
         } else {
             carreraSchema.find(filtros)
                 .find({isActive: true})
-                .sort({updatedAt: -1})
+                .sort({createdAt: -1})
                 .limit(limite)
                 .exec((err, carreras) => {
                     if (err) return res.status(400).json({ msg: 'Ha ocurrido un error' })
