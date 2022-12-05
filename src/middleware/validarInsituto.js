@@ -13,6 +13,12 @@ const validarInstituto = async (req, res, next) => {
 
     try {
         const { uid } = jwt.verify(token, process.env.SECRET);
+
+        if(!uid){
+            return res.status(400).json({
+                msg: 'Sesion expirada'
+            })
+        }
         
         const instituto = await Instituto.findById(uid, {contraseña: 0, descripcion: 0, tipo: 0, ubicacion: 0, contacto: 0, correo: 0})
 

@@ -42,16 +42,16 @@ const carreraSchema = new Schema({
         type: String,
         require: true
     },
+    requisitos: {
+        type: String,
+        require: true
+    },
     institucion: {
         type: String,
         require: true
     },
     idInsituto: {
         type: SchemaTypes.ObjectId
-    },
-    fechaCreacion: {
-        type: Object,
-        default: new Date().toLocaleDateString('es-es', { weekday:"long", year:"numeric", month:"long", day:"numeric"})
     },
     visitas: {
         type: Number,
