@@ -10,6 +10,9 @@ const instituteSchema = new Schema({
         type: String,
         require: true
     },
+    caracter: {
+        type: String,
+    },
 
     tipo: {
         type: String,

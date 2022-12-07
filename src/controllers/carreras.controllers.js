@@ -67,4 +67,21 @@ ctrl.getInfoCarrera = async (req, res) => {
 
 }
 
+
+ctrl.getOfertasAcademicas = async(req, res)=>{
+
+    const {id} = req.headers;
+
+    const ofertasAcademicas = await carreraSchema.find({idInsituto: id});
+
+    if(!ofertasAcademicas){
+        return res.status(400).json({
+            msg: 'Ha ocurrido un error'
+        })
+    }
+
+    res.json(ofertasAcademicas);
+
+}
+
 module.exports = ctrl;

@@ -1,4 +1,5 @@
 const carreraSchema = require('../models/carreras.model')
+const institutoModel = require("../models/intituto.model")
 const ctrl = {};
 
 ctrl.getMisCarreras = async (req, res)=>{
@@ -138,6 +139,42 @@ ctrl.deleteCarrera = async (req, res)=>{
         console.log(error.message);
         res.status(400).json('Ha ocurrido un error al intentar eliminar la carrera');
     }
+}
+
+
+ctrl.getInfoInstituto = async (req, res)=>{
+    const id = req.instituto.id
+
+    const info = await institutoModel.findById(id, {contraseña: 0});
+    
+
+    if(!info){
+        return res.status(400).json({
+            msg: 'Ha ocurrido un error'
+        })
+    }
+
+    return res.json(info)
+}
+
+
+ctrl.putInsitutos = async (req, res)=>{
+
+    const id = req.instituto.id
+
+    const {nombre, descripcion, tipo, ubicacion, contacto, caracter} = req.body
+
+    const updateInsti = await institutoModel.findByIdAndUpdate(id, {nombre, descripcion, tipo, ubicacion, contacto, caracter});
+
+
+    if(!updateInsti){
+        return res.status(400).json({
+            msg: 'Ha ocurrido un error'
+        })
+    }
+
+    return res.json('ok')
+
 }
 
 module.exports = ctrl;
